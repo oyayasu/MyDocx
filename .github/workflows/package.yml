@@ -2,6 +2,8 @@ name: Package MyDocx
 on:
   push:
     branches: [main, feature/google-drive-macos-ui]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 jobs:
   package:
