@@ -34,7 +34,7 @@
     close.addEventListener("click", toggleOverlay);
     const frame = document.createElement("iframe");
     frame.title = "MyDocx — biblioteca de documentos";
-    frame.src = chrome.runtime.getURL("dashboard.html");
+    frame.src = chrome.runtime.getURL("cloud.html");
     panel.append(frame, close); overlay.appendChild(panel);
     overlay.addEventListener("click", (e) => { if (e.target === overlay) toggleOverlay(); });
     document.body.appendChild(overlay);
