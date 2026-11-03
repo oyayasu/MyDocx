@@ -1,0 +1,12 @@
+MyDocx v0.2 — Brave e Chrome
+
+1. Extraia ESTE ZIP uma vez.
+2. Abra brave://extensions ou chrome://extensions.
+3. Ative Modo do desenvolvedor.
+4. Clique em Carregar sem compactacao.
+5. Escolha esta pasta extraida, onde esta o arquivo manifest.json.
+6. Abra o Google Docs e clique em MyDocx, no canto inferior.
+
+IMPORTANTE: Nao procure .exe. Esta e uma extensao de navegador.
+As pastas sao locais e nao alteram o Google Drive.
+Marca-texto no Google Docs ainda e experimental.

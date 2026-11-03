@@ -89,7 +89,7 @@
 
   function browserClick(el) {
     if (!el) return;
-    for (const type of ["mouseover", "mousedown", "click", "mouseup"]) el.dispatchEvent(new MouseEvent(type, { bubbles: true, cancelable: true, view: window }));
+    for (const type of ["mouseover", "mousedown", "mouseup", "click"]) el.dispatchEvent(new MouseEvent(type, { bubbles: true, cancelable: true, view: window }));
   }
   function visible(el) { return !!el && el.getClientRects().length > 0; }
   function colorCell(color) {

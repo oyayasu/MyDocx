@@ -5,7 +5,7 @@
   const DEFAULT = { folders: [], documents: [], settings: { highlightColor: "#ffff00", highlightEnabled: true } };
   const PALETTE = ["#91a9c6", "#8dab9b", "#d5af82", "#be9bac", "#a9a0d2", "#c1bbb0", "#85b5c5", "#d6a1a1"];
   let state = structuredClone(DEFAULT);
-  let view = "all";
+  let view = "root";
   let query = "";
   let editorMode = null;
   let contextItem = null;

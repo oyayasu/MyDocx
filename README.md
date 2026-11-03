@@ -2,7 +2,7 @@
 
 Extensão para **Brave e Chrome** (Manifest V3), sem servidor, sem login adicional e **sem integração com ChatGPT**.
 
-## O que faz (v0.1)
+## O que faz (v0.2)
 
 - Biblioteca de atalhos para arquivos Google Docs, salva localmente no navegador.
 - Criação de pastas e subpastas, com nomes e cores personalizadas.
@@ -17,7 +17,9 @@ Extensão para **Brave e Chrome** (Manifest V3), sem servidor, sem login adicion
 
 ## Instalação (Brave / Chrome)
 
-1. No GitHub, use **Code → Download ZIP** e extraia o projeto.
+**Não é um programa .exe.** Extensões do Brave/Chrome usam a opção **Carregar sem compactação** após extrair o ZIP.
+
+1. Baixe o pacote **MyDocx-v0.2** pela seção **Artifacts** da execução mais recente do GitHub Actions. O arquivo baixado já é o pacote instalável (sem ZIP dentro de ZIP). Extraia-o uma única vez.
 2. Abra **brave://extensions** ou **chrome://extensions**.
 3. Ative **Modo do desenvolvedor**.
 4. Clique em **Carregar sem compactação** e selecione a pasta que contém o arquivo \`manifest.json\`.
