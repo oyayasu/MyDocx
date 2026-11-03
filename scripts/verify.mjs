@@ -7,7 +7,7 @@ const read = (name) => fs.readFileSync(path.join(root, name), "utf8");
 const manifest = JSON.parse(read("manifest.json"));
 
 assert.equal(manifest.manifest_version, 3, "Manifest V3 required");
-assert.match(manifest.version, /^\\d+\\.\\d+\\.\\d+$/);
+assert.match(manifest.version, /^[0-9]+[.][0-9]+[.][0-9]+$/);
 assert.ok(manifest.permissions.includes("storage"));
 assert.ok(manifest.permissions.includes("identity"));
 assert.ok(manifest.host_permissions.includes("https://www.googleapis.com/*"));
