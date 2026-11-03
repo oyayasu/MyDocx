@@ -8,7 +8,7 @@ Extensão para **Brave e Chrome** (Manifest V3), sem servidor, sem login adicion
 - Criação de pastas e subpastas, com nomes e cores personalizadas.
 - Mover documentos e pastas arrastando-os, ou pelo menu de contexto.
 - Favoritos, busca, renomeação e remoção (sem excluir os arquivos reais).
-- Ao abrir um documento do Google Docs, botão **MyDocx** para cadastrá-lo e abrir a biblioteca.
+- Ao abrir um documento do Google Docs, botão **MyDocx** para cadastrá-lo e abrir a biblioteca como janela sobre o Google Docs, sem sair da página.
 - Marca-texto experimental no editor Google Docs:
   - seleção arrastada da esquerda para a direita → aplica a cor atual;
   - seleção arrastada da direita para a esquerda → remove o destaque;
@@ -21,7 +21,7 @@ Extensão para **Brave e Chrome** (Manifest V3), sem servidor, sem login adicion
 2. Abra **brave://extensions** ou **chrome://extensions**.
 3. Ative **Modo do desenvolvedor**.
 4. Clique em **Carregar sem compactação** e selecione a pasta que contém o arquivo \`manifest.json\`.
-5. Clique no ícone da extensão para abrir a biblioteca, ou acesse um documento Google Docs e use o botão **MyDocx** no canto inferior.
+5. Clique no ícone da extensão para abrir a biblioteca em uma aba, ou acesse o Google Docs e use o botão **MyDocx** no canto inferior para abrir uma janela dentro da página.
 
 Não há processo de compilação: são HTML, CSS e JavaScript.
 

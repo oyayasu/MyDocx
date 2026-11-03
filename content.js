@@ -15,9 +15,30 @@
   launcher.title = "Abrir biblioteca MyDocx";
   launcher.addEventListener("click", async () => {
     if (isEditor()) await addCurrentDocument();
-    chrome.runtime.sendMessage({ type: "MYDOCX_OPEN" });
+    toggleOverlay();
   });
-  document.documentElement.appendChild(launcher);
+  document.body.appendChild(launcher);
+
+  let overlay = null;
+  function toggleOverlay() {
+    if (overlay) { overlay.remove(); overlay = null; return; }
+    overlay = document.createElement("div");
+    overlay.id = "mydocx-overlay";
+    overlay.setAttribute("role", "dialog");
+    overlay.setAttribute("aria-label", "Biblioteca MyDocx");
+    const panel = document.createElement("div");
+    panel.className = "mydocx-panel";
+    const close = document.createElement("button");
+    close.type = "button"; close.className = "mydocx-close"; close.textContent = "×";
+    close.setAttribute("aria-label", "Fechar biblioteca MyDocx");
+    close.addEventListener("click", toggleOverlay);
+    const frame = document.createElement("iframe");
+    frame.title = "MyDocx — biblioteca de documentos";
+    frame.src = chrome.runtime.getURL("dashboard.html");
+    panel.append(frame, close); overlay.appendChild(panel);
+    overlay.addEventListener("click", (e) => { if (e.target === overlay) toggleOverlay(); });
+    document.body.appendChild(overlay);
+  }
 
   const palette = document.createElement("div"); palette.id = "mydocx-colors"; palette.hidden = true;
   const title = document.createElement("strong"); title.textContent = "Cor do marca-texto"; palette.appendChild(title);
@@ -58,7 +79,11 @@
     button.addEventListener("click", () => setColor(color, activeSelection));
     grid.appendChild(button);
   }
-  picker.addEventListener("input", (e) => setColor(e.target.value, false));
+  picker.addEventListener("input", (e) => {
+    if (/^#[0-9a-fA-F]{6}$/.test(e.target.value)) {
+      settings.highlightColor = e.target.value.toLowerCase();
+    }
+  });
   picker.addEventListener("change", (e) => setColor(e.target.value, activeSelection));
   remove.addEventListener("click", () => { palette.hidden = true; if (activeSelection) applyHighlight("none"); else notify("Selecione um trecho do documento antes de remover a marcação."); });
 
