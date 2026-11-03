@@ -64,6 +64,12 @@ function docsUrl(file) {
   } catch (_) { /* fallback */ }
   return "https://docs.google.com/document/d/" + encodeURIComponent(file.id) + "/edit";
 }
+function safeFolderColor(value) { return /^#[0-9a-f]{6}$/i.test(value || "") ? value : fallbackColor; }
+function openDocument(file) {
+  const url = docsUrl(file);
+  if (chrome.tabs?.create) chrome.tabs.create({ url });
+  else window.open(url, "_blank", "noopener");
+}
 function isValidId(id) { return typeof id === "string" && /^[a-zA-Z0-9_-]+$/.test(id); }
 function getAuthToken(interactive) {
   return new Promise((resolve, reject) => {
@@ -255,7 +261,7 @@ function renderTree() {
       row.title = folder.name;
       row.style.paddingLeft = (12 + depth * 12) + "px";
       const icon = textNode(row, "span", "mini-folder", "");
-      icon.style.setProperty("--folder-color", folder.folderColorRgb || fallbackColor);
+      icon.style.setProperty("--folder-color", safeFolderColor(folder.folderColorRgb));
       textNode(row, "span", "", folder.name);
       row.onclick = () => chooseView(folder.id);
       row.oncontextmenu = (e) => openMenu(e, folder);
@@ -303,7 +309,7 @@ function card(item) {
   const top = textNode(el, "div", "file-top", "");
   if (isFolder) {
     const art = textNode(top, "span", "folder-art", "");
-    art.style.setProperty("--folder-color", item.folderColorRgb || fallbackColor);
+    art.style.setProperty("--folder-color", safeFolderColor(item.folderColorRgb));
   } else {
     const art = textNode(top, "span", "document-art", "");
     art.appendChild(document.createElement("i"));
@@ -318,7 +324,7 @@ function card(item) {
   el.onclick = (e) => {
     if (e.target.closest("button")) return;
     if (isFolder) chooseView(item.id);
-    else window.open(docsUrl(item), "_blank", "noopener");
+    else openDocument(item);
   };
   el.onkeydown = (e) => { if (e.key === "Enter") el.click(); };
   el.oncontextmenu = (e) => openMenu(e, item);
@@ -384,7 +390,7 @@ function openMenu(e, item) {
   closeMenu();
   const isFolder = item.mimeType === FOLDER;
   if (isFolder) menuAction("Abrir pasta", () => chooseView(item.id));
-  else menuAction("Abrir documento", () => window.open(docsUrl(item), "_blank", "noopener"));
+  else menuAction("Abrir documento", () => openDocument(item));
   menuAction(item.starred ? "Remover dos favoritos" : "Adicionar aos favoritos", () => mutate(item.id, { starred: !item.starred }, "Favoritos atualizados."));
   if (item.capabilities?.canEdit !== false) {
     menuAction("Renomear", () => editDialog(isFolder ? "rename-folder" : "rename-doc", item));
@@ -490,7 +496,7 @@ async function saveForm(e) {
       currentForm = null;
       await sync();
       notify(isFolder ? "Pasta criada no Google Drive." : "Documento criado no Google Drive.");
-      if (!isFolder) window.open(docsUrl(created), "_blank", "noopener");
+      if (!isFolder) openDocument(created);
     } else if (mode.startsWith("rename-")) {
       await drive("files/" + encodeURIComponent(item.id) + "?fields=id", { method: "PATCH", body: { name } });
       $("edit-dialog").close(); currentForm = null; await sync(); notify("Nome atualizado no Google Drive.");
