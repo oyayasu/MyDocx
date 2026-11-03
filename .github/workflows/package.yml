@@ -1,6 +1,8 @@
 name: Package MyDocx
 on:
   push:
+    branches: [main, feature/google-drive-macos-ui]
+  pull_request:
     branches: [main]
   workflow_dispatch:
 jobs:
@@ -11,6 +13,7 @@ jobs:
         uses: actions/checkout@v4
       - name: Verify JavaScript syntax
         run: |
+          node --check cloud.js
           node --check dashboard.js
           node --check content.js
           node --check background.js
@@ -19,7 +22,7 @@ jobs:
       - name: Upload installable extension (single ZIP)
         uses: actions/upload-artifact@v4
         with:
-          name: MyDocx-v0.2
+          name: MyDocx-v0.3
           if-no-files-found: error
           compression-level: 9
           path: |
@@ -30,5 +33,9 @@ jobs:
             dashboard.html
             dashboard.css
             dashboard.js
+            cloud.html
+            cloud.css
+            cloud.js
+            SETUP-GOOGLE.md
             README.md
             INSTALLAR.txt

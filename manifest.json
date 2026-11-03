@@ -1,10 +1,11 @@
 {
   "manifest_version": 3,
   "name": "MyDocx",
-  "description": "Biblioteca local de documentos Google Docs, pastas coloridas e marca-texto por direção.",
-  "version": "0.2.0",
+  "description": "Organizador Google Docs com Google Drive, pastas reais e interface inspirada no macOS.",
+  "version": "0.3.0",
   "permissions": [
-    "storage"
+    "storage",
+    "identity"
   ],
   "action": {
     "default_title": "Abrir MyDocx"
@@ -31,11 +32,24 @@
       "resources": [
         "dashboard.html",
         "dashboard.css",
-        "dashboard.js"
+        "dashboard.js",
+        "cloud.html",
+        "cloud.css",
+        "cloud.js"
       ],
       "matches": [
         "https://docs.google.com/*"
       ]
     }
-  ]
+  ],
+  "host_permissions": [
+    "https://www.googleapis.com/*"
+  ],
+  "oauth2": {
+    "client_id": "REPLACE_WITH_YOUR_CLIENT_ID.apps.googleusercontent.com",
+    "scopes": [
+      "https://www.googleapis.com/auth/drive.metadata",
+      "https://www.googleapis.com/auth/drive.file"
+    ]
+  }
 }
