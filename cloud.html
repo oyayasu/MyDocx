@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>MyDocx — Google Drive</title>
+<link rel="stylesheet" href="cloud.css">
+<script src="cloud.js" defer></script>
+</head>
+<body>
+<div class="window">
+  <aside class="sidebar" aria-label="Biblioteca">
+    <div class="traffic" aria-hidden="true"><i></i><i></i><i></i></div>
+    <div class="brand"><div class="brand-icon">M</div><div class="brand-name">MyDocx<span>Biblioteca</span></div></div>
+    <div class="sidebar-label">BIBLIOTECA</div>
+    <nav class="navigation" aria-label="Navegação principal">
+      <button class="nav-item selected" data-view="root" type="button"><span class="nav-symbol">⌂</span>Meu Drive</button>
+      <button class="nav-item" data-view="all" type="button"><span class="nav-symbol">▤</span>Documentos</button>
+      <button class="nav-item" data-view="recent" type="button"><span class="nav-symbol">◷</span>Recentes</button>
+      <button class="nav-item" data-view="starred" type="button"><span class="nav-symbol">☆</span>Favoritos</button>
+    </nav>
+    <div class="folders-heading"><span class="sidebar-label">PASTAS</span><button id="sidebar-add-folder" class="icon-button" type="button" aria-label="Nova pasta" title="Nova pasta">+</button></div>
+    <div id="folder-tree" class="folder-tree" aria-label="Estrutura de pastas"></div>
+    <div class="sidebar-spacer"></div>
+    <div class="account-area">
+      <button id="account-button" class="account-button" type="button">
+        <span id="account-avatar" class="account-avatar">G</span>
+        <span class="account-detail"><strong id="account-name">Google Drive</strong><small id="account-email">Não conectado</small></span>
+        <span class="account-ellipsis">•••</span>
+      </button>
+      <button id="local-button" class="local-button" type="button">Biblioteca local <span>↗</span></button>
+    </div>
+  </aside>
+  <main class="main">
+    <header class="toolbar">
+      <div id="breadcrumbs" class="breadcrumbs" aria-label="Caminho da pasta">MyDocx</div>
+      <div class="toolbar-right">
+        <label class="search-wrap"><span aria-hidden="true">⌕</span><input type="search" id="search" placeholder="Pesquisar documentos…" autocomplete="off" aria-label="Pesquisar por nome"></label>
+        <button id="refresh-button" class="icon-button tool-icon" type="button" aria-label="Atualizar" title="Sincronizar agora">↻</button>
+      </div>
+    </header>
+    <div class="body-content">
+      <section id="connect-screen" class="connect-screen">
+        <div class="connect-symbol"><span>M</span></div>
+        <h1>Seus documentos, em um só lugar.</h1>
+        <p>Conecte sua conta Google para acessar automaticamente os documentos e organizar as pastas do Drive.</p>
+        <button id="connect-button" class="button primary google-connect" type="button"><span class="google-g">G</span> Conectar com Google</button>
+        <p id="connect-hint" class="connect-hint">A conexão é direta com o Google. O MyDocx não lê o conteúdo dos seus textos.</p>
+        <div id="setup-panel" class="setup-panel" hidden>
+          <strong>Configuração inicial necessária</strong>
+          <p>A integração precisa de um Client ID OAuth criado no Google Cloud para esta extensão. Veja o arquivo SETUP-GOOGLE.md no repositório.</p>
+          <div class="setup-id">ID da extensão: <code id="extension-id"></code><button id="copy-extension-id" type="button" class="copy-button">Copiar</button></div>
+          <a href="https://console.cloud.google.com/apis/credentials" target="_blank" rel="noopener noreferrer">Abrir credenciais do Google Cloud ↗</a>
+        </div>
+        <button id="offline-button" type="button" class="link-button">Continuar com a biblioteca local</button>
+      </section>
+      <section id="workspace" class="workspace" hidden>
+        <div class="page-heading">
+          <div><div class="eyebrow" id="eyebrow">GOOGLE DRIVE</div><h1 id="page-title">Meu Drive</h1><p id="page-subtitle">Pastas e documentos da sua conta.</p></div>
+          <div class="heading-actions">
+            <div class="layout-toggle" aria-label="Exibição"><button class="layout-button active" type="button" data-layout="grid" title="Grade" aria-label="Grade">▦</button><button class="layout-button" type="button" data-layout="list" title="Lista" aria-label="Lista">☷</button></div>
+            <button id="new-folder" type="button" class="button secondary">+ Pasta</button>
+            <button id="new-document" type="button" class="button primary">+ Documento</button>
+          </div>
+        </div>
+        <div class="list-head"><span id="item-count">0 itens</span><span id="sync-label"></span></div>
+        <div id="items" class="items"></div>
+        <div id="empty" class="empty" hidden><div class="empty-symbol">▤</div><h2 id="empty-title">Pasta vazia</h2><p id="empty-message">Crie uma pasta ou documento para começar.</p></div>
+      </section>
+    </div>
+  </main>
+</div>
+<div id="context-menu" class="context-menu" role="menu" hidden></div>
+<div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+<dialog id="edit-dialog">
+  <form id="edit-form">
+    <div class="dialog-heading"><h2 id="dialog-title">Nova pasta</h2><button id="dialog-close" class="icon-button" type="button" aria-label="Fechar">×</button></div>
+    <div id="name-field" class="field"><label for="item-name">Nome</label><input id="item-name" maxlength="200" autocomplete="off" required></div>
+    <div id="parent-field" class="field"><label for="item-parent">Localização</label><select id="item-parent"></select></div>
+    <div id="color-field" class="field"><label for="item-color">Cor da pasta</label><input id="item-color" type="color" value="#8eabd0"></div>
+    <p class="dialog-note" id="dialog-note">As alterações são feitas no Google Drive.</p>
+    <p class="dialog-error" id="dialog-error" role="alert" hidden></p>
+    <div class="dialog-actions"><button id="dialog-cancel" class="button secondary" type="button">Cancelar</button><button id="dialog-save" class="button primary" type="submit">Salvar</button></div>
+  </form>
+</dialog>
+</body>
+</html>
