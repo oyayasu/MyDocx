@@ -1,50 +1,39 @@
-# MyDocx — organizador para Google Docs
+# MyDocx v0.3
 
-Extensão para **Brave e Chrome** (Manifest V3), sem servidor, sem login adicional e **sem integração com ChatGPT**.
+Extensão Brave / Chrome para organizar Google Docs no Google Drive em uma interface clara, minimalista e inspirada no Finder do macOS.
 
-## O que faz (v0.2)
+## Funcionalidades
 
-- Biblioteca de atalhos para arquivos Google Docs, salva localmente no navegador.
-- Criação de pastas e subpastas, com nomes e cores personalizadas.
-- Mover documentos e pastas arrastando-os, ou pelo menu de contexto.
-- Favoritos, busca, renomeação e remoção (sem excluir os arquivos reais).
-- Ao abrir um documento do Google Docs, botão **MyDocx** para cadastrá-lo e abrir a biblioteca como janela sobre o Google Docs, sem sair da página.
-- Marca-texto experimental no editor Google Docs:
-  - seleção arrastada da esquerda para a direita → aplica a cor atual;
-  - seleção arrastada da direita para a esquerda → remove o destaque;
-  - botão direito sobre a área do documento → paleta de cores e escolha de hexadecimal;
-  - ativação e escolha da cor padrão na biblioteca.
+- Conexão com conta Google via OAuth 2.0 e carregamento automático de pastas e documentos Google Docs existentes.
+- Criação, renomeação, cores e subpastas reais do Drive.
+- Mover documentos e pastas com arrastar e soltar ou pelo menu de opções.
+- Favoritos sincronizados com as estrelas do Google Drive, ordenação por recentes, busca por nome.
+- Grade/lista, navegação em árvore, breadcrumbs e atualização manual/ao voltar para a janela.
+- Acesso direto ao Google Docs, abrindo os documentos no site oficial.
+- A biblioteca local anterior foi preservada e pode ser aberta pelo botão Biblioteca local.
+- A marcação experimental de texto dentro do editor Google Docs continua disponível.
+- Sem servidor próprio e sem conexão com o ChatGPT.
 
-## Instalação (Brave / Chrome)
+## Instalação
 
-**Não é um programa .exe.** Extensões do Brave/Chrome usam a opção **Carregar sem compactação** após extrair o ZIP.
+1. Na aba Actions do GitHub, abra a execução bem-sucedida de Package MyDocx.
+2. Baixe MyDocx-v0.3, extraia o ZIP e selecione a pasta do manifest.json em brave://extensions ou chrome://extensions > Carregar sem compactação.
+3. Se estiver atualizando, coloque a nova versão na mesma pasta da anterior para preservar dados locais e o ID.
+4. Para conectar uma conta, siga [SETUP-GOOGLE.md](SETUP-GOOGLE.md) e configure o Client ID OAuth. Nenhuma credencial Google vem incorporada ao projeto.
+5. Abra MyDocx e clique em Conectar com Google. Até lá, a Biblioteca local funciona sem conta.
 
-1. Baixe o pacote **MyDocx-v0.2** pela seção **Artifacts** da execução mais recente do GitHub Actions. O arquivo baixado já é o pacote instalável (sem ZIP dentro de ZIP). Extraia-o uma única vez.
-2. Abra **brave://extensions** ou **chrome://extensions**.
-3. Ative **Modo do desenvolvedor**.
-4. Clique em **Carregar sem compactação** e selecione a pasta que contém o arquivo \`manifest.json\`.
-5. Clique no ícone da extensão para abrir a biblioteca em uma aba, ou acesse o Google Docs e use o botão **MyDocx** no canto inferior para abrir uma janela dentro da página.
+## Estrutura
 
-Não há processo de compilação: são HTML, CSS e JavaScript.
+- cloud.html / cloud.css / cloud.js: nova interface Google Drive e API oficial.
+- dashboard.html / dashboard.css / dashboard.js: organizador local legado.
+- background.js: abre a interface conectada.
+- content.js / content.css: acesso ao MyDocx a partir do Google Docs e marca-texto experimental.
+- scripts/verify.mjs: verificações de estrutura.
 
-## Limitações importantes
+Apenas metadados dos documentos existentes são acessados pela extensão. Não há acesso ao conteúdo dos textos através da integração do Drive. O marca-texto baseado na interface do editor continua experimental, já que o Google Docs usa canvas.
 
-- **Pastas são virtuais e locais.** Elas organizam links, não modificam as pastas reais do Google Drive. Dados locais não sincronizam automaticamente entre navegadores e podem ser perdidos ao limpar os dados da extensão.
-- Para mover pastas reais ou buscar toda a lista de documentos automaticamente, seria necessária autorização direta para a **API do Google Drive**, independente do ChatGPT.
-- **Marca-texto: experimental.** O editor do Google Docs utiliza canvas e a extensão não recebe uma seleção de texto comum via \`window.getSelection()\`. O protótipo detecta a direção aproximada do arrasto e usa a barra nativa do Docs (\`#bgColorButton\`). Mudanças na interface do Google, localização da paleta, seleção em várias linhas e o momento da seleção podem comprometer o funcionamento. Teste primeiro em um documento descartável. Nunca altera texto por APIs privadas, não coleta conteúdo nem usa OCR.
-- O clique direito no documento substitui o menu de contexto padrão apenas quando o modo de marcação está ativo.
-- Um documento é cadastrado na biblioteca ao clicar no botão MyDocx enquanto ele estiver aberto. Links também podem ser adicionados manualmente.
+## Testes
 
-## Segurança e privacidade
+Execute node --check cloud.js; node --check dashboard.js; node --check content.js; node --check background.js; node scripts/verify.mjs.
 
-Somente a permissão \`storage\` é pedida. A extensão executa seu script apenas nas páginas \`docs.google.com/document/*\`. Não acessa e-mails, não envia conteúdo a servidores próprios e não solicita credenciais do Google.
-
-## Desenvolvimento
-
-- \`manifest.json\`: configuração da extensão.
-- \`dashboard.html\`, \`dashboard.css\`, \`dashboard.js\`: biblioteca de pastas e links.
-- \`content.js\`, \`content.css\`: botão de abertura e integração experimental do marca-texto.
-- \`background.js\`: abertura da biblioteca.
-- \`.github/workflows/package.yml\`: empacota ZIP para download como artefato em GitHub Actions.
-
-Para testar a sintaxe JS localmente: \`node --check dashboard.js && node --check content.js && node --check background.js\`.
+Não há migração automática das pastas virtuais locais para as pastas reais do Google Drive, para evitar alterações silenciosas nos documentos. Exclusões na nova interface enviam itens à lixeira REAL do Google Drive.
