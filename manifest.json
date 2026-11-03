@@ -1,0 +1,15 @@
+{
+  "manifest_version": 3,
+  "name": "MyDocx",
+  "description": "Biblioteca local de documentos Google Docs, pastas coloridas e marca-texto por direção.",
+  "version": "0.1.0",
+  "permissions": ["storage"],
+  "action": { "default_title": "Abrir MyDocx" },
+  "background": { "service_worker": "background.js" },
+  "content_scripts": [{
+    "matches": ["https://docs.google.com/document/*"],
+    "js": ["content.js"],
+    "css": ["content.css"],
+    "run_at": "document_idle"
+  }]
+}

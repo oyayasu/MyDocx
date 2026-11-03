@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>MyDocx</title>
+  <link rel="stylesheet" href="dashboard.css">
+  <script src="dashboard.js" defer></script>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar" aria-label="Navegação">
+      <div class="brand"><span class="brand-mark">M</span><span>MyDocx</span><span class="version">v0.1</span></div>
+      <div class="section-label">BIBLIOTECA</div>
+      <nav class="quick">
+        <button type="button" class="nav-button active" data-view="all"><span class="nav-icon">▦</span> Todos os documentos</button>
+        <button type="button" class="nav-button" data-view="favorites"><span class="nav-icon">☆</span> Favoritos</button>
+        <button type="button" class="nav-button" data-view="root"><span class="nav-icon">⌂</span> Minhas pastas</button>
+      </nav>
+      <div class="sidebar-heading"><span class="section-label">PASTAS</span><button id="add-folder-sidebar" type="button" class="icon-button" title="Nova pasta" aria-label="Nova pasta">+</button></div>
+      <div id="folder-tree" class="folder-tree"></div>
+      <div class="sidebar-bottom">
+        <div class="privacy"><span class="privacy-dot"></span> Organização salva neste navegador</div>
+        <a href="https://docs.google.com/document/" target="_blank" rel="noopener noreferrer" class="docs-link">Abrir Google Docs ↗</a>
+      </div>
+    </aside>
+    <main class="main">
+      <header class="topbar">
+        <div id="breadcrumbs" class="breadcrumbs" aria-label="Caminho"></div>
+        <div class="top-actions"><input id="search" type="search" aria-label="Pesquisar documentos e pastas" placeholder="Pesquisar documentos…"><button id="new-folder" type="button" class="button secondary">+ Pasta</button><button id="new-doc" type="button" class="button primary">+ Documento</button></div>
+      </header>
+      <section class="intro">
+        <div><p class="eyebrow">BIBLIOTECA</p><h1 id="page-title">Todos os documentos</h1><p id="page-subtitle">Seus links do Google Docs organizados em um só lugar.</p></div>
+        <div class="count" id="count" aria-live="polite"></div>
+      </section>
+      <section id="items" class="items" aria-label="Itens"></section>
+      <section id="empty" class="empty" hidden><div class="empty-icon">▤</div><h2>Nada por aqui ainda</h2><p id="empty-message">Adicione um documento ou crie uma pasta para começar.</p><button id="empty-add" class="button secondary" type="button">Adicionar documento</button></section>
+      <section class="help">
+        <div class="help-heading"><span class="help-icon">✎</span><strong>Marca-texto no Google Docs</strong><label class="switch"><input id="highlight-enabled" type="checkbox"><span class="switch-track"></span></label></div>
+        <p>Arraste da esquerda para a direita para marcar. Arraste da direita para a esquerda para remover. Clique com o botão direito no texto para escolher uma cor.</p>
+        <div class="help-bottom"><label>Cor padrão <input id="highlight-color" type="color" value="#ffff00"></label><span>Experimental: depende da barra de formatação do Google Docs.</span></div>
+      </section>
+    </main>
+  </div>
+  <dialog id="form-dialog"><form id="item-form" method="dialog">
+    <div class="dialog-header"><h2 id="form-title">Novo item</h2><button id="close-dialog" class="icon-button" type="button" aria-label="Fechar">×</button></div>
+    <label for="item-name">Nome</label><input id="item-name" name="name" type="text" maxlength="120" required autocomplete="off" placeholder="Nome">
+    <div id="url-row"><label for="item-url">Link do Google Docs</label><input id="item-url" name="url" type="url" placeholder="https://docs.google.com/document/d/…" autocomplete="off"></div>
+    <div id="folder-row"><label for="item-parent">Dentro de</label><select id="item-parent" name="parent"></select><label for="item-color">Cor da pasta</label><input id="item-color" name="color" type="color" value="#91a9c6"></div>
+    <p id="form-error" class="form-error" role="alert" hidden></p>
+    <div class="dialog-buttons"><button id="cancel-dialog" class="button secondary" type="button">Cancelar</button><button type="submit" class="button primary">Salvar</button></div>
+  </form></dialog>
+  <div id="context-menu" class="context-menu" role="menu" hidden></div>
+  <div id="toast" class="toast" role="status" hidden></div>
+</body>
+</html>
