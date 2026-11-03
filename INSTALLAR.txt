@@ -1,12 +1,14 @@
-MyDocx v0.2 — Brave e Chrome
+MyDocx v0.3 — extensao para Brave e Chrome
 
-1. Extraia ESTE ZIP uma vez.
-2. Abra brave://extensions ou chrome://extensions.
-3. Ative Modo do desenvolvedor.
-4. Clique em Carregar sem compactacao.
-5. Escolha esta pasta extraida, onde esta o arquivo manifest.json.
-6. Abra o Google Docs e clique em MyDocx, no canto inferior.
+1. Extraia o ZIP do GitHub Actions.
+2. Acesse brave://extensions ou chrome://extensions.
+3. Ative Modo do desenvolvedor e escolha Carregar sem compactacao.
+4. Selecione a pasta com manifest.json.
+5. Para conectar Google Drive, siga SETUP-GOOGLE.md.
+6. Atualize a extensao depois de inserir Client ID OAuth no manifest.
+7. Clique em Conectar com Google.
 
-IMPORTANTE: Nao procure .exe. Esta e uma extensao de navegador.
-As pastas sao locais e nao alteram o Google Drive.
-Marca-texto no Google Docs ainda e experimental.
+No Brave, ative Permitir login do Google para extensoes em brave://settings/extensions.
+Sem OAuth, a Biblioteca local continua disponivel.
+Na atualizacao da extensao anterior, mantenha o mesmo diretorio para preservar ID e dados locais.
+Nao e um programa .exe.
